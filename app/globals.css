@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties ──────────────────────────────────────────────── */
+:root {
+  /* Brand colours as CSS vars for use in arbitrary values / JS */
+  --color-bg-primary: theme("colors.slate.950");
+  --color-bg-surface: theme("colors.slate.900");
+  --color-bg-elevated: theme("colors.slate.800");
+  --color-text-primary: theme("colors.slate.100");
+  --color-text-secondary: theme("colors.slate.400");
+  --color-accent-primary: theme("colors.cyan.500");
+  --color-accent-secondary: theme("colors.cyan.300");
+  --color-warning: theme("colors.amber.500");
+  --color-success: theme("colors.emerald.500");
+  --color-danger: theme("colors.rose.500");
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 400ms ease-in-out;
+}
+
+/* ── Base Styles ────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Smooth scrolling — respects prefers-reduced-motion */
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100dvh;
+  }
+
+  /* Focus styles — visible for keyboard navigation, hidden for pointer */
+  :focus-visible {
+    @apply outline-none ring-2 ring-cyan-500 ring-offset-2 ring-offset-slate-950;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-cyan-900 text-cyan-100;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  /* Links */
+  a {
+    @apply text-cyan-400 transition-colors duration-150 hover:text-cyan-300;
+  }
+
+  /* Horizontal rule */
+  hr {
+    @apply border-slate-800;
+  }
+
+  /* Scrollbar — always reserve space to prevent layout shift */
+  html {
+    scrollbar-gutter: stable;
+  }
+}
+
+/* ── Component Utilities ────────────────────────────────────────────────── */
+@layer components {
+  /* Card surface */
+  .card {
+    @apply rounded-xl bg-slate-900 border border-slate-800 p-4;
+  }
+
+  /* Primary action button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-lg bg-cyan-600 px-4 py-2 text-sm font-medium text-white
+           shadow-sm transition-all duration-150
+           hover:bg-cyan-500 active:scale-95
+           focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950
+           disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Secondary / ghost button */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-medium text-slate-200
+           shadow-sm transition-all duration-150
+           hover:bg-slate-700 active:scale-95
+           focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950
+           disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Danger button */
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white
+           shadow-sm transition-all duration-150
+           hover:bg-rose-500 active:scale-95
+           focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950
+           disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Form input */
+  .input {
+    @apply w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2
+           text-sm text-slate-100 placeholder-slate-500
+           transition-colors duration-150
+           focus:border-cyan-600 focus:outline-none focus:ring-1 focus:ring-cyan-600;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  /* Status indicator dot */
+  .status-dot {
+    @apply inline-block h-2 w-2 rounded-full;
+  }
+}
+
+/* ── Utility Overrides ──────────────────────────────────────────────────── */
+@layer utilities {
+  /* Hide scrollbar while keeping scroll functionality */
+  .no-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE / Edge */
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome / Safari / Opera */
+  }
+
+  /* Thin styled scrollbar for content areas */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme("colors.slate.700") transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-700;
+  }
+
+  /* Clamp text to N lines */
+  .line-clamp-1 { -webkit-line-clamp: 1; }
+  .line-clamp-2 { -webkit-line-clamp: 2; }
+  .line-clamp-3 { -webkit-line-clamp: 3; }
+
+  /* Full-screen safe area on mobile (notch / home indicator) */
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Glass morphism card */
+  .glass {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+  }
+
+  /* Gradient text */
+  .text-gradient-cyan {
+    @apply bg-gradient-to-r from-cyan-400 to-cyan-200 bg-clip-text text-transparent;
+  }
+  .text-gradient-amber {
+    @apply bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent;
+  }
+}

@@ -1,0 +1,78 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "sankofa-water-pwa/docs/**"
+      - ".github/workflows/pages.yml"
+      - "sankofa-water-pwa/.github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify or create docs folder
+        run: |
+          if [ -d "sankofa-water-pwa/docs" ]; then
+            echo "Publishing from sankofa-water-pwa/docs"
+            mkdir -p _site
+            cp -r sankofa-water-pwa/docs/* _site/
+          elif [ -d "docs" ]; then
+            echo "Publishing from root docs/"
+            mkdir -p _site
+            cp -r docs/* _site/
+          else
+            echo "Generating fallback docs site"
+            mkdir -p _site
+            cat << 'EOF' > _site/index.html
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Sankofa Water PWA Documentation</title>
+              <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #020617; color: #f8fafc; padding: 2rem; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+                h1 { color: #06b6d4; }
+                a { color: #22d3ee; }
+                code { background: #1e293b; padding: 0.2rem 0.4rem; border-radius: 4px; }
+              </style>
+            </head>
+            <body>
+              <h1>Sankofa Digital Matjhabeng Water PWA</h1>
+              <p>Documentation site for the Sankofa IoT Telemetry and Incident Management System.</p>
+              <p>Repository: <code>senatla-ops-internal-automation-solution</code></p>
+            </body>
+            </html>
+          EOF
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

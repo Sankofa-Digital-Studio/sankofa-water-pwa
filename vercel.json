@@ -1,0 +1,47 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "framework": "nextjs",
+
+  "regions": ["jnb1"],
+
+  "functions": {
+    "app/api/v1/lora/webhook/route.ts": {
+      "maxDuration": 10,
+      "memory": 512
+    },
+    "app/api/v1/alerts/whatsapp/route.ts": {
+      "maxDuration": 10,
+      "memory": 512
+    },
+    "app/api/**/route.ts": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  },
+
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    }
+  ],
+
+  "rewrites": [
+    {
+      "source": "/api/health",
+      "destination": "/api/v1/health"
+    }
+  ],
+
+  "crons": []
+}
