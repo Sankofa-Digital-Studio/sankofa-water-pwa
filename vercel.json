@@ -3,7 +3,7 @@
 
   "framework": "nextjs",
 
-  "regions": ["jnb1"],
+  "regions": ["cpt1"],
 
   "functions": {
     "app/api/v1/lora/webhook/route.ts": {
