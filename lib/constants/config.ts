@@ -13,3 +13,16 @@ export const AVG_CURRENT_UA = 11.2;
 export const LORA_BAND = 'EU868'; // TODO: Verify ICASA compliance
 export const NODE_COUNT_MVP0 = 10;
 export const GATEWAY_UPS_HOURS = 53;
+
+// Commercial Model & MVP-0 Pricing (40% Net Profit Margin Tier 1A)
+export const MVP_0_PILOT_FEE_ZAR = 150000;
+export const MVP_0_DELIVERY_COST_ZAR = 90000;
+export const MVP_0_NET_PROFIT_ZAR = 60000;
+export const MVP_0_PROFIT_MARGIN_PERCENT = 40.0;
+export const MVP_0_PILOT_DURATION_DAYS = 90;
+
+// Extended Pilot Model (Tier 1B: 180 Days + Citizen WhatsApp Integration)
+export const MVP_0_EXTENDED_PILOT_FEE_ZAR = 245000;
+export const MVP_0_EXTENDED_DELIVERY_COST_ZAR = 140000;
+export const MVP_0_EXTENDED_NET_PROFIT_ZAR = 105000;
+export const MVP_0_EXTENDED_PROFIT_MARGIN_PERCENT = 42.9;

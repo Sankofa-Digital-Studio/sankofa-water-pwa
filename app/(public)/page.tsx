@@ -19,6 +19,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PilotSimulatorCard } from '@/components/pilot/pilot-simulator-card';
 
 export const metadata = {
   title: 'Architecture Wiki & Hardware Specification | Sankofa Water',
@@ -84,7 +85,7 @@ const ARCH_LAYERS = [
       'Live tariff accounting at R 17.01/kL recovering up to R 1,027,324.80 per 18 prevented bursts',
       'Municipal SDBIP audit discrepancy flag highlighting gaps between claimed vs verified repairs',
       '5 Formal stakeholder dossiers with digital cryptographic signature block and SHA-256 audit trail',
-      'Clear progression roadmap: MVP-0 (R 8,000) → Lean DMA (R 2.28M) → Full Municipal (R 3.45M)',
+      'Clear progression roadmap: MVP-0 (R 150,000 / 40% margin) → Lean DMA (R 1.25M) → Full Municipal (R 5.85M)',
     ],
   },
 ];
@@ -200,6 +201,11 @@ export default function ArchitectureWikiPage() {
             Proverbs 27:23–24 · Principle of Continuous Asset Stewardship
           </p>
         </div>
+      </section>
+
+      {/* Live Supervised Pilot Simulator (Hourglass Methodology) */}
+      <section className="space-y-4">
+        <PilotSimulatorCard />
       </section>
 
       {/* 4-Layer Architecture Cards */}

@@ -72,8 +72,8 @@ CREATE POLICY "owner_read_own_subscription"
   FOR SELECT
   USING (
     auth.role() = 'service_role'
-    OR auth.uid()::TEXT = (SELECT raw_user_meta_data->>'phone_e164'
-                           FROM auth.users WHERE id = auth.uid())
+    OR phone_e164 = (SELECT raw_user_meta_data->>'phone_e164'
+                     FROM auth.users WHERE id = auth.uid())
   );
 
 CREATE POLICY "service_write_subscriptions"

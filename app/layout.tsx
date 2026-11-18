@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "@/app/globals.css";
+import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 
 /* ── Fonts ──────────────────────────────────────────────────────────────── */
 const inter = Inter({
@@ -119,6 +120,7 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className="min-h-dvh bg-slate-950 font-sans text-slate-100 antialiased">
+        <ServiceWorkerRegister />
         {children}
       </body>
     </html>

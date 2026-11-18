@@ -19,13 +19,13 @@ export interface CapexTierInfo {
 export const CAPEX_TIERS: CapexTierInfo[] = [
   {
     id: 'MVP_0',
-    name: 'MVP-0 Proof of Value',
-    badge: '10 Nodes',
-    capexZar: 148500,
+    name: 'Tier 1A: MVP-0 Rapid Pilot',
+    badge: '10 Nodes (90-Day Pilot)',
+    capexZar: 150000,
     nodeCount: 10,
     coverage: 'Ward 3 CBD & Critical Rupture Points',
-    description: 'Rapid deployment testbed on Welkom AC high-risk trunk lines',
-    paybackMonths: 1.2,
+    description: 'Turn-key 90-day pilot on Welkom AC high-risk lines (R90k delivery cost, 40% net margin)',
+    paybackMonths: 1.3,
   },
   {
     id: 'LEAN_DMA',
