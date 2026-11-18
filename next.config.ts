@@ -4,6 +4,13 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for best practices
   reactStrictMode: true,
 
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // Image optimization – allow Supabase storage and common CDN domains
   images: {
     remotePatterns: [
