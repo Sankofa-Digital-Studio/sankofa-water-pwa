@@ -36,11 +36,21 @@ Sankofa Digital Labs is an indigenous South African civic tech and embedded IoT 
 
 ## 3. Financial Forecast & Unit Economics
 
-### 3.1 Pilot Phase (MVP-0: 10 Nodes)
-- Total CAPEX: R 8,000.00 (R 6,200 hardware + R 1,800 gateway radio).
-- 6-Month Operations: Absorbed / R 12,500 total inclusive of fiber backhaul.
-- Target Water Recovery: 18 bursts prevented/detected early × 28 kL/hr × 120 hrs = 60,480 kL = **R 1,028,764.80 saved at R17.01/kL**.
-- **ROI Multiple:** 128.4× return on hardware CAPEX.
+### 3.1 Pilot Phase (MVP-0: 10 Nodes / 90-Day Turn-Key Pilot)
+- **Municipal Turn-Key Pilot Fee (Tier 1A):** **R 150,000.00** ex VAT (Priced under MFMA Section 33 / 3-quote petty procurement limit of R200k/R300k).
+- **Direct Delivery Cost (COGS & Effort):** **R 90,000.00**
+  * Hardware BOM (10 Boundary Watch nodes @ R620): R 6,200.00
+  * High-Site Gateway & 53h LiFePO4 UPS: R 3,800.00
+  * LoRaWAN, Cellular SIM & Supabase Edge Hosting: R 5,000.00
+  * Mechanical Field Plumber Installation & Pit Taps: R 18,000.00
+  * Acoustic Wavefront Profiling & PostGIS Model: R 15,000.00
+  * Field Technician Enablement & Runbook Certification: R 12,000.00
+  * 3-Month Dedicated SLA Ops & MFMA Audit Logging: R 25,000.00
+  * Consumables, IP68 Sealants & Contingency: R 5,000.00
+- **Sankofa Operating Profit:** **R 60,000.00 (40.0% Net Profit Margin)**.
+- **Municipal Water Recovery (90-Day Baseline):** 9 bursts prevented/detected early × 28 kL/hr × 120 hrs = 30,240 kL = **R 514,382.40 saved at R17.01/kL**.
+- **Municipal Payback & ROI:** **1.3 months payback / 3.43× direct fiscal return**.
+- **Funder Alignment:** Direct commercial revenue from the municipality confirms customer validation, establishing revenue momentum to service the SEFA credit line and unlock Milestone 1 drawdown.
 
 ### 3.2 Phase 1 Lean DMA Rollout (50 Nodes + Satellite L-Band SAR)
 - Total Allocation: **R 2,280,000.00**.

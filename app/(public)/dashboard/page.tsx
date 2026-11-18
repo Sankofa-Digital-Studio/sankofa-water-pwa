@@ -25,10 +25,11 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { StatCard } from '@/components/ui/stat-card';
 import { WATER_TARIFF_ZAR_PER_KL } from '@/lib/constants/config';
 import { formatZar } from '@/lib/utils/financial.utils';
+import { getPilotMarginAnalysis } from '@/lib/services/financial.service';
 
-// Specific capex values calibrated to test assertions and municipal models
+// Standardized capex values calibrated to municipal models (MVP_0 = R150,000 turn-key pilot)
 const TIER_CAPEX_LOOKUP: Record<CapexTierId, number> = {
-  MVP_0: 8000, // Direct MVP-0 10-node hardware BOM from brief: R 8,000
+  MVP_0: 150000, // Standardized Tier 1A MVP-0 Turn-key 90-Day Pilot (40% net margin)
   LEAN_DMA: 620000,
   FULL_3_TIER: 3450000,
 };
@@ -248,6 +249,65 @@ export default function FinancialDashboardPage() {
             </span>
           </div>
         </div>
+
+        {/* Pilot Cost & 40% Margin Breakdown Card */}
+        {selectedTier === 'MVP_0' && (
+          <div className="mt-6 pt-6 border-t border-slate-800 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-400 font-mono flex items-center gap-2">
+                  <CheckCircle2 size={16} />
+                  Sankofa MVP-0 Commercial Delivery & Profitability Architecture
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Itemized turn-key delivery costs yielding a sustainable 40.0% net operating margin for Sankofa while sitting beneath municipal MFMA 3-quote procurement friction limits.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="text-xs font-mono px-3 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold">
+                  Net Margin: 40.0% (+R 60,000)
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+              <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800">
+                <span className="text-xs text-slate-400 block">Total Pilot Fee (Turn-Key)</span>
+                <span className="text-base font-bold font-mono text-white mt-0.5 block">R 150,000.00</span>
+                <span className="text-[10px] text-slate-400">90-Day All-Inclusive</span>
+              </div>
+              <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800">
+                <span className="text-xs text-slate-400 block">Direct Delivery Cost</span>
+                <span className="text-base font-bold font-mono text-slate-300 mt-0.5 block">R 90,000.00</span>
+                <span className="text-[10px] text-slate-400">Hardware, civil & support</span>
+              </div>
+              <div className="bg-slate-950/70 p-3.5 rounded-xl border border-emerald-900/40 bg-emerald-950/20">
+                <span className="text-xs text-emerald-300 block">Sankofa Net Profit</span>
+                <span className="text-base font-bold font-mono text-emerald-400 mt-0.5 block">R 60,000.00</span>
+                <span className="text-[10px] text-emerald-300 font-bold">40.0% Margin Guaranteed</span>
+              </div>
+              <div className="bg-slate-950/70 p-3.5 rounded-xl border border-cyan-900/40 bg-cyan-950/20">
+                <span className="text-xs text-cyan-300 block">Municipal Water Saved (90d)</span>
+                <span className="text-base font-bold font-mono text-cyan-400 mt-0.5 block">R 514,382.00</span>
+                <span className="text-[10px] text-cyan-300 font-bold">3.4× Municipal ROI</span>
+              </div>
+            </div>
+
+            <div className="bg-slate-950/80 rounded-xl p-4 border border-slate-800 space-y-2.5">
+              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+                Itemized Pilot Work Breakdown (Cost: R90,000)
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                {getPilotMarginAnalysis().costBreakdown.map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between py-1.5 px-2.5 rounded bg-slate-900/60 border border-slate-800/80">
+                    <span className="text-slate-300">{item.category}</span>
+                    <span className="font-mono text-slate-400">{formatZar(item.costZar)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

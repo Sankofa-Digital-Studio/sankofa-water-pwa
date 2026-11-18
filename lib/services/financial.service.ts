@@ -107,22 +107,23 @@ export function getCapexTiers(): CapexTier[] {
   return [
     {
       id: 'MVP_0',
-      name: 'Tier 1: Rapid Pilot (10 Nodes)',
+      name: 'Tier 1A: Rapid Pilot (10 Nodes / 90 Days)',
       code: 'MVP_0',
       nodeCount: 10,
-      capexZar: 285_000,
-      opexZarPerMonth: 12_500,
+      capexZar: 150_000,
+      opexZarPerMonth: 0,
       description:
-        'Immediate 10-node LoRaWAN pressure acoustic pilot covering high-risk transmission lines in Welkom CBD and Riebeeckstad.',
+        'Immediate 10-node LoRaWAN pressure acoustic turn-key pilot covering high-risk transmission lines in Welkom CBD and Riebeeckstad.',
       deliverables: [
-        '10x IP68 Submersible Pressure Transducers with LoRaWAN transmitters',
-        '1x Solar-powered 8-channel LoRaWAN Gateway with 4G backhaul',
+        '10x IP68 Submersible Pressure Transducers with LoRaWAN transmitters (Welkom Ward 3)',
+        '1x High-site solar-powered 8-channel LoRaWAN Gateway with 53h LiFePO4 UPS',
         'Sankofa Field PWA with GPS 15m geofencing for contractors',
-        'Citizen WhatsApp emergency alert channel for Ward 3 & 5',
+        'Full acoustic calibration, mechanical installation & crew onboarding',
+        '3-Month Dedicated SLA monitoring & weekly water recovery audits',
       ],
       targetWards: 'Wards 3 & 5 (Welkom CBD, Riebeeckstad)',
       estimatedAnnualSavingsZar: 1_280_000,
-      paybackMonths: 2.7,
+      paybackMonths: 1.3,
     },
     {
       id: 'LEAN_DMA',
@@ -165,4 +166,45 @@ export function getCapexTiers(): CapexTier[] {
       paybackMonths: 2.1,
     },
   ]
+}
+
+export interface PilotCostItem {
+  category: string;
+  description: string;
+  costZar: number;
+}
+
+export interface PilotMarginBreakdown {
+  tierId: string;
+  name: string;
+  pilotFeeZar: number;
+  totalCostZar: number;
+  netProfitZar: number;
+  profitMarginPercent: number;
+  costBreakdown: PilotCostItem[];
+}
+
+/**
+ * Returns detailed commercial cost and margin breakdown for the MVP-0 pilot,
+ * ensuring a sustainable 40.0% net profit margin on delivery.
+ */
+export function getPilotMarginAnalysis(): PilotMarginBreakdown {
+  return {
+    tierId: 'MVP_0',
+    name: 'MVP-0 90-Day Turn-Key Pilot',
+    pilotFeeZar: 150_000,
+    totalCostZar: 90_000,
+    netProfitZar: 60_000,
+    profitMarginPercent: 40.0,
+    costBreakdown: [
+      { category: 'Hardware BOM', description: '10x Boundary Watch nodes @ R620/unit', costZar: 6_200 },
+      { category: 'High-Site Gateway & UPS', description: 'LoRaWAN 8-channel gateway + 53h LiFePO4 battery', costZar: 3_800 },
+      { category: 'Connectivity & Cloud', description: '90-day cellular SIM, fiber backhaul & Supabase Edge hosting', costZar: 5_000 },
+      { category: 'Mechanical Field Installation', description: '2 artisan plumbers, pit excavation & tap manifold fitting (5 days)', costZar: 18_000 },
+      { category: 'GIS & Acoustic Calibration', description: 'PostGIS spatial network model, node acoustic baseline profiling', costZar: 15_000 },
+      { category: 'Crew Enablement & Runbooks', description: 'Municipal field technician mobile PWA training & certification', costZar: 12_000 },
+      { category: '3-Month SLA Operations', description: 'Dedicated telemetry monitoring, incident triage & weekly MFMA audit reports', costZar: 25_000 },
+      { category: 'Consumables & Contingency', description: 'IP68 resin potting, brass fittings, replacement lithium cells', costZar: 5_000 },
+    ],
+  };
 }
