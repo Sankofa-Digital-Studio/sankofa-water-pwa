@@ -4,7 +4,7 @@ Start with the [README](README.md) for local setup and verification. The app cov
 
 ## Issues
 
-Use the [issue chooser](https://github.com/OhhttooeXCIV/sankofa-water-pwa/issues/new/choose). Check existing issues first. Include the affected workflow, what you expected and what you observed. Use synthetic readings and redact site coordinates, repair photos, phone numbers and credentials. Route security issues through the [security policy](SECURITY.md).
+Use the [issue chooser](https://github.com/Sankofa-Digital-Studio/sankofa-water-pwa/issues/new/choose). Check existing issues first. Include the affected workflow, what you expected and what you observed. Use synthetic readings and redact site coordinates, repair photos, phone numbers and credentials. Route security issues through the [security policy](SECURITY.md).
 
 ## Pull requests
 

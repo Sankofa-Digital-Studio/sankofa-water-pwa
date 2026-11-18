@@ -16,7 +16,7 @@ Sankofa Digital’s prototype for monitoring water infrastructure and coordinati
 Use Node.js 22 LTS and npm. After cloning the repository:
 
 ```powershell
-git clone https://github.com/OhhttooeXCIV/sankofa-water-pwa.git
+git clone https://github.com/Sankofa-Digital-Studio/sankofa-water-pwa.git
 cd sankofa-water-pwa
 npm ci
 Copy-Item .env.example .env.local
@@ -44,6 +44,6 @@ The initial import has a known Supabase RPC type error that blocks the productio
 - [Contributing guide](CONTRIBUTING.md)
 - [Code of conduct](CODE_OF_CONDUCT.md)
 - [Security policy](SECURITY.md)
-- [Report a bug or propose a feature](https://github.com/OhhttooeXCIV/sankofa-water-pwa/issues/new/choose)
+- [Report a bug or propose a feature](https://github.com/Sankofa-Digital-Studio/sankofa-water-pwa/issues/new/choose)
 
 This repository currently has no published project license.

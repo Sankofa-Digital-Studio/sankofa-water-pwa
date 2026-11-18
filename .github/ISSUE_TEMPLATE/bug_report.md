@@ -17,4 +17,4 @@ Identify the page or API, commit, browser or device, and whether you used simula
 
 ## Observed result
 
-Add redacted screenshots or logs if helpful. Use [private vulnerability reporting](https://github.com/OhhttooeXCIV/sankofa-water-pwa/security/advisories/new) for security issues.
+Add redacted screenshots or logs if helpful. Use [private vulnerability reporting](https://github.com/Sankofa-Digital-Studio/sankofa-water-pwa/security/advisories/new) for security issues.
