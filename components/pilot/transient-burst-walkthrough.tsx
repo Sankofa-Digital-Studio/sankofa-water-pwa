@@ -27,6 +27,7 @@ import { formatZar } from '@/lib/utils/financial.utils';
 interface WalkthroughMilestone {
   id: string;
   stepNumber: string;
+  shortLabel: string;
   title: string;
   phaseBadge: string;
   badgeVariant: 'nominal' | 'surge' | 'depressurized' | 'filtered';
@@ -41,6 +42,7 @@ const MILESTONES: WalkthroughMilestone[] = [
   {
     id: 'stage-transient-origin',
     stepNumber: '01',
+    shortLabel: '12+ Bar Surge',
     title: 'Hydraulic Shockwave Inception (12+ Bar Surge Trigger)',
     phaseBadge: 'Transient Genesis',
     badgeVariant: 'surge',
@@ -59,6 +61,7 @@ const MILESTONES: WalkthroughMilestone[] = [
   {
     id: 'stage-snubbing-telemetry',
     stepNumber: '02',
+    shortLabel: 'Edge Damping',
     title: 'Edge Transducer Snubbing & LoRaWAN Interrupt Uplink',
     phaseBadge: 'Sub-Millisecond Damping',
     badgeVariant: 'filtered',
@@ -77,6 +80,7 @@ const MILESTONES: WalkthroughMilestone[] = [
   {
     id: 'stage-tdoa-triangulation',
     stepNumber: '03',
+    shortLabel: 'Wave Tracking',
     title: 'Spatial Coincidence & Acoustic Wavefront Localization',
     phaseBadge: 'Spatial Localization',
     badgeVariant: 'depressurized',
@@ -95,6 +99,7 @@ const MILESTONES: WalkthroughMilestone[] = [
   {
     id: 'stage-rapid-intervention',
     stepNumber: '04',
+    shortLabel: 'Collar Repair',
     title: 'Geofenced Dispatch & Active Micro-Rupture Collar Repair',
     phaseBadge: 'Field Containment',
     badgeVariant: 'nominal',
@@ -113,6 +118,7 @@ const MILESTONES: WalkthroughMilestone[] = [
   {
     id: 'stage-compound-recovery',
     stepNumber: '05',
+    shortLabel: '18 Bursts Saved',
     title: 'Monthly Cumulative Impact: 18 Bursts Prevented',
     phaseBadge: 'Net Fiscal & Volumetric Recovery',
     badgeVariant: 'nominal',
@@ -129,8 +135,6 @@ const MILESTONES: WalkthroughMilestone[] = [
       'Municipal payback on the R 150,000 turn-key pilot is achieved in just 1.3 months (over 6.8× ROI in 90 days), with zero ghost-work fraud.',
   },
 ];
-
-const MILESTONE_ICONS = [Zap, Gauge, MapPin, Wrench, Coins];
 
 export function TransientBurstWalkthrough() {
   const [selectedMilestoneIndex, setSelectedMilestoneIndex] = useState<number>(0);
@@ -178,24 +182,23 @@ export function TransientBurstWalkthrough() {
           </div>
         </div>
 
-        {/* Material Stepper for Smaller Screens (Mobile & Tablet) */}
-        <div className="md:hidden pt-4 space-y-3">
-          <div className="flex items-center justify-between relative px-2 sm:px-4">
+        {/* Material Stepper (Pure Numbered Nodes & Checkmarks - Zero Icon Clutter) */}
+        <div className="pt-6">
+          <div className="relative flex items-center justify-between max-w-3xl mx-auto px-4 sm:px-8">
             {/* Background connector track line */}
-            <div className="absolute left-6 right-6 top-5 -translate-y-1/2 h-0.5 bg-slate-800 -z-0" />
+            <div className="absolute left-8 right-8 top-5 -translate-y-1/2 h-1 bg-slate-800 -z-0 rounded-full" />
 
             {/* Active progress connector line */}
             <div
-              className="absolute left-6 top-5 -translate-y-1/2 h-0.5 bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-300 -z-0"
+              className="absolute left-8 top-5 -translate-y-1/2 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-300 -z-0 rounded-full"
               style={{
-                width: `${(selectedMilestoneIndex / (MILESTONES.length - 1)) * 82}%`,
+                width: `${(selectedMilestoneIndex / (MILESTONES.length - 1)) * 84}%`,
               }}
             />
 
             {MILESTONES.map((m, idx) => {
-              const isSelected = idx === selectedMilestoneIndex;
               const isCompleted = idx < selectedMilestoneIndex;
-              const MilestoneIcon = MILESTONE_ICONS[idx] || Zap;
+              const isSelected = idx === selectedMilestoneIndex;
 
               return (
                 <button
@@ -206,8 +209,9 @@ export function TransientBurstWalkthrough() {
                   aria-current={isSelected ? 'step' : undefined}
                   className="relative z-10 flex flex-col items-center group focus:outline-none"
                 >
+                  {/* Numbered Step Circle (No icons - purely step numbers 01 to 05 or Checkmark) */}
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 border-2 ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-xs sm:text-sm transition-all duration-200 border-2 ${
                       isSelected
                         ? 'bg-amber-500 border-amber-300 text-slate-950 shadow-lg shadow-amber-500/30 scale-110 ring-4 ring-amber-500/20'
                         : isCompleted
@@ -218,89 +222,41 @@ export function TransientBurstWalkthrough() {
                     {isCompleted ? (
                       <CheckCircle2 size={18} className="stroke-[2.5]" />
                     ) : (
-                      <MilestoneIcon size={16} className={isSelected ? 'stroke-[2.5]' : ''} />
+                      <span>{m.stepNumber}</span>
                     )}
                   </div>
+
+                  {/* Step Label beneath circle (Clear, concise, no overflow) */}
                   <span
-                    className={`mt-1 font-mono text-[10px] font-bold ${
+                    className={`mt-2 font-mono text-[11px] sm:text-xs font-semibold text-center hidden sm:block ${
                       isSelected
-                        ? 'text-amber-300'
+                        ? 'text-amber-300 font-bold'
                         : isCompleted
                         ? 'text-emerald-400'
-                        : 'text-slate-500'
+                        : 'text-slate-400 group-hover:text-slate-300'
                     }`}
                   >
-                    {m.stepNumber}
+                    {m.shortLabel}
                   </span>
                 </button>
               );
             })}
           </div>
 
-          {/* Active Step Indicator Pill for Material Stepper */}
-          <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 shadow-inner">
+          {/* Active Step Banner on mobile (< 640px) */}
+          <div className="sm:hidden mt-4 flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
             <div className="flex items-center gap-2 min-w-0">
               <span className="font-mono text-xs font-bold text-amber-400 shrink-0">
                 Phase {activeMilestone.stepNumber}/05:
               </span>
               <span className="text-xs font-semibold text-white truncate">
-                {activeMilestone.title}
+                {activeMilestone.shortLabel}
               </span>
             </div>
-            <Badge variant={activeMilestone.badgeVariant} className="text-[10px] shrink-0">
-              {activeMilestone.phaseBadge}
-            </Badge>
+            <span className="text-[10px] font-mono text-slate-400 shrink-0 pl-2">
+              Tap 01–05
+            </span>
           </div>
-        </div>
-
-        {/* Desktop 5-Step Grid Tabs (Medium Screens and Above) */}
-        <div className="hidden md:grid md:grid-cols-5 gap-2.5 pt-6">
-          {MILESTONES.map((m, idx) => {
-            const isSelected = idx === selectedMilestoneIndex;
-            const isCompleted = idx < selectedMilestoneIndex;
-            const MilestoneIcon = MILESTONE_ICONS[idx] || Zap;
-
-            return (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => setSelectedMilestoneIndex(idx)}
-                className={`p-3 text-left rounded-xl transition-all border flex flex-col justify-between gap-2 min-h-[72px] ${
-                  isSelected
-                    ? 'bg-amber-500/15 border-amber-500/50 text-white shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/30'
-                    : 'bg-slate-950/60 border-slate-800/80 text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-                }`}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-1.5">
-                    <MilestoneIcon
-                      size={14}
-                      className={
-                        isSelected
-                          ? 'text-amber-400'
-                          : isCompleted
-                          ? 'text-emerald-400'
-                          : 'text-slate-500'
-                      }
-                    />
-                    <span className="font-mono text-xs font-bold text-amber-400">
-                      Step {m.stepNumber}
-                    </span>
-                  </div>
-                  <Badge variant={m.badgeVariant} className="text-[10px] px-1.5 py-0">
-                    {m.phaseBadge}
-                  </Badge>
-                </div>
-                <span className="text-xs font-semibold leading-tight whitespace-normal">
-                  {idx === 0 && '12+ Bar Surge Inception'}
-                  {idx === 1 && 'Edge Damping Telemetry'}
-                  {idx === 2 && 'PostGIS Wave Localization'}
-                  {idx === 3 && 'Geofenced Collar Repair'}
-                  {idx === 4 && '18 Bursts Prevented / Mo'}
-                </span>
-              </button>
-            );
-          })}
         </div>
       </CardHeader>
 
