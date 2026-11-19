@@ -24,6 +24,7 @@ import { formatZar } from '@/lib/utils/financial.utils';
 export interface PilotStep {
   step: number;
   phase: string;
+  shortLabel: string;
   title: string;
   subtitle: string;
   metric: string;
@@ -37,6 +38,7 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 1,
     phase: 'Hourglass Phase 1 & 2: Edge Acoustic Detection',
+    shortLabel: 'Hydraulic Shock',
     title: 'Water Hammer & Hydraulic Transient Detection',
     subtitle: 'Node 101 & 102 (Welkom CBD, Stateway Ave)',
     metric: '11.2 Bar Spike ➔ 0.8 Bar Drop',
@@ -54,6 +56,7 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 2,
     phase: 'Hourglass Phase 3: Spatial TDOA Triangulation',
+    shortLabel: 'Acoustic TDOA',
     title: 'PostGIS Multi-Node Coincidence Localization',
     subtitle: 'Triangulation between Node 101 & Node 102',
     metric: '± 11.4 Meters Circular Error',
@@ -71,6 +74,7 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 3,
     phase: 'Hourglass Phase 4 & 5: Field Dispatch & Geofencing',
+    shortLabel: 'GPS Geofence',
     title: 'Anti-Ghost-Work GPS Attestation (≤ 15.0m)',
     subtitle: 'Mobile Field Crew Dispatched to Ground Zero',
     metric: '8.2m Distance Verified',
@@ -88,6 +92,7 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 4,
     phase: 'Hourglass Phase 6: 3-Stage Photographic Proof',
+    shortLabel: 'Photo Proof',
     title: 'Excavation, Class 16 Sleeve & Compaction Verification',
     subtitle: 'Immutable Evidence Ledger for Municipal Audit',
     metric: '3 of 3 Stages Completed',
@@ -105,6 +110,7 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 5,
     phase: 'Hourglass Phase 7: Municipal Authorization & Water Saved',
+    shortLabel: 'MFMA Voucher',
     title: 'MFMA Sec 33 Payment Voucher & Recovered Water',
     subtitle: 'Director of Water Services Digital Authorization',
     metric: '1,680 kL Saved = R 28,576.80',
@@ -120,8 +126,6 @@ const PILOT_STEPS: PilotStep[] = [
     ],
   },
 ];
-
-const STEP_ICONS = [Activity, MapPin, ShieldCheck, Camera, FileCheck2];
 
 export function PilotSimulatorCard() {
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
@@ -200,24 +204,23 @@ export function PilotSimulatorCard() {
           </div>
         </div>
 
-        {/* Material Stepper for Smaller Screens (Mobile & Tablet) */}
-        <div className="md:hidden pt-4 space-y-3">
-          <div className="flex items-center justify-between relative px-2 sm:px-4">
+        {/* Material Stepper (Pure Numbered Nodes & Checkmarks - Zero Icon Clutter) */}
+        <div className="pt-6">
+          <div className="relative flex items-center justify-between max-w-3xl mx-auto px-4 sm:px-8">
             {/* Background connector track line */}
-            <div className="absolute left-6 right-6 top-5 -translate-y-1/2 h-0.5 bg-slate-800 -z-0" />
+            <div className="absolute left-8 right-8 top-5 -translate-y-1/2 h-1 bg-slate-800 -z-0 rounded-full" />
 
             {/* Active progress connector line */}
             <div
-              className="absolute left-6 top-5 -translate-y-1/2 h-0.5 bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-300 -z-0"
+              className="absolute left-8 top-5 -translate-y-1/2 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-300 -z-0 rounded-full"
               style={{
-                width: `${(currentStepIndex / (PILOT_STEPS.length - 1)) * 82}%`,
+                width: `${(currentStepIndex / (PILOT_STEPS.length - 1)) * 84}%`,
               }}
             />
 
             {PILOT_STEPS.map((s, idx) => {
               const isCompleted = idx < currentStepIndex;
               const isCurrent = idx === currentStepIndex;
-              const StepIcon = STEP_ICONS[idx] || Activity;
 
               return (
                 <button
@@ -228,8 +231,9 @@ export function PilotSimulatorCard() {
                   aria-current={isCurrent ? 'step' : undefined}
                   className="relative z-10 flex flex-col items-center group focus:outline-none"
                 >
+                  {/* Numbered Step Circle (No icons - purely step numbers 01 to 05 or Checkmark) */}
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 border-2 ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-xs sm:text-sm transition-all duration-200 border-2 ${
                       isCurrent
                         ? 'bg-amber-500 border-amber-300 text-slate-950 shadow-lg shadow-amber-500/30 scale-110 ring-4 ring-amber-500/20'
                         : isCompleted
@@ -240,95 +244,41 @@ export function PilotSimulatorCard() {
                     {isCompleted ? (
                       <CheckCircle2 size={18} className="stroke-[2.5]" />
                     ) : (
-                      <StepIcon size={16} className={isCurrent ? 'stroke-[2.5]' : ''} />
+                      <span>0{s.step}</span>
                     )}
                   </div>
+
+                  {/* Step Label beneath circle (Clear, concise, no overflow) */}
                   <span
-                    className={`mt-1 font-mono text-[10px] font-bold ${
+                    className={`mt-2 font-mono text-[11px] sm:text-xs font-semibold text-center hidden sm:block ${
                       isCurrent
-                        ? 'text-amber-300'
+                        ? 'text-amber-300 font-bold'
                         : isCompleted
                         ? 'text-emerald-400'
-                        : 'text-slate-500'
+                        : 'text-slate-400 group-hover:text-slate-300'
                     }`}
                   >
-                    0{s.step}
+                    {s.shortLabel}
                   </span>
                 </button>
               );
             })}
           </div>
 
-          {/* Active Step Indicator Pill for Material Stepper */}
-          <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 shadow-inner">
+          {/* Active Step Banner on mobile (< 640px) */}
+          <div className="sm:hidden mt-4 flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
             <div className="flex items-center gap-2 min-w-0">
               <span className="font-mono text-xs font-bold text-amber-400 shrink-0">
                 Step 0{activeStep.step}/05:
               </span>
               <span className="text-xs font-semibold text-white truncate">
-                {activeStep.step === 1 && 'Hydraulic Shock Inception'}
-                {activeStep.step === 2 && 'PostGIS TDOA Triangulation'}
-                {activeStep.step === 3 && 'GPS Anti-Ghost Attestation'}
-                {activeStep.step === 4 && '3-Stage Photo Evidence'}
-                {activeStep.step === 5 && 'MFMA Sec 33 Payment Voucher'}
+                {activeStep.shortLabel}
               </span>
             </div>
             <span className="text-[10px] font-mono text-slate-400 shrink-0 pl-2">
-              Tap step node
+              Tap 01–05
             </span>
           </div>
-        </div>
-
-        {/* Desktop 5-Step Grid Tabs (Medium Screens and Above) */}
-        <div className="hidden md:grid md:grid-cols-5 gap-2.5 pt-6">
-          {PILOT_STEPS.map((s, idx) => {
-            const isCompleted = idx < currentStepIndex;
-            const isCurrent = idx === currentStepIndex;
-            const StepIcon = STEP_ICONS[idx] || Activity;
-
-            return (
-              <button
-                key={s.step}
-                type="button"
-                onClick={() => setCurrentStepIndex(idx)}
-                className={`py-3 px-3 text-left rounded-xl transition-all border flex flex-col justify-between gap-2 min-h-[72px] ${
-                  isCurrent
-                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/30'
-                    : isCompleted
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:bg-slate-800/40 hover:text-slate-300'
-                }`}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-1.5">
-                    <StepIcon
-                      size={14}
-                      className={
-                        isCurrent
-                          ? 'text-amber-400'
-                          : isCompleted
-                          ? 'text-emerald-400'
-                          : 'text-slate-500'
-                      }
-                    />
-                    <span className="text-xs font-mono font-bold">Step 0{s.step}</span>
-                  </div>
-                  {isCompleted ? (
-                    <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
-                  ) : isCurrent ? (
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
-                  ) : null}
-                </div>
-                <span className="text-xs font-medium leading-tight whitespace-normal">
-                  {s.step === 1 && '1. Hydraulic Shock'}
-                  {s.step === 2 && '2. TDOA Triangulation'}
-                  {s.step === 3 && '3. GPS Anti-Ghost'}
-                  {s.step === 4 && '4. 3-Stage Photo'}
-                  {s.step === 5 && '5. MFMA Voucher'}
-                </span>
-              </button>
-            );
-          })}
         </div>
       </CardHeader>
 
