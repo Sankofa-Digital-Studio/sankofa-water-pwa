@@ -121,6 +121,8 @@ const PILOT_STEPS: PilotStep[] = [
   },
 ];
 
+const STEP_ICONS = [Activity, MapPin, ShieldCheck, Camera, FileCheck2];
+
 export function PilotSimulatorCard() {
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
@@ -198,26 +200,119 @@ export function PilotSimulatorCard() {
           </div>
         </div>
 
-        {/* 5-Step Progress Tabs - Non-truncated responsive layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-6">
+        {/* Material Stepper for Smaller Screens (Mobile & Tablet) */}
+        <div className="md:hidden pt-4 space-y-3">
+          <div className="flex items-center justify-between relative px-2 sm:px-4">
+            {/* Background connector track line */}
+            <div className="absolute left-6 right-6 top-5 -translate-y-1/2 h-0.5 bg-slate-800 -z-0" />
+
+            {/* Active progress connector line */}
+            <div
+              className="absolute left-6 top-5 -translate-y-1/2 h-0.5 bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-300 -z-0"
+              style={{
+                width: `${(currentStepIndex / (PILOT_STEPS.length - 1)) * 82}%`,
+              }}
+            />
+
+            {PILOT_STEPS.map((s, idx) => {
+              const isCompleted = idx < currentStepIndex;
+              const isCurrent = idx === currentStepIndex;
+              const StepIcon = STEP_ICONS[idx] || Activity;
+
+              return (
+                <button
+                  key={s.step}
+                  type="button"
+                  onClick={() => setCurrentStepIndex(idx)}
+                  aria-label={`Step ${s.step}: ${s.title}`}
+                  aria-current={isCurrent ? 'step' : undefined}
+                  className="relative z-10 flex flex-col items-center group focus:outline-none"
+                >
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 border-2 ${
+                      isCurrent
+                        ? 'bg-amber-500 border-amber-300 text-slate-950 shadow-lg shadow-amber-500/30 scale-110 ring-4 ring-amber-500/20'
+                        : isCompleted
+                        ? 'bg-emerald-500 border-emerald-400 text-slate-950 hover:scale-105'
+                        : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+                    }`}
+                  >
+                    {isCompleted ? (
+                      <CheckCircle2 size={18} className="stroke-[2.5]" />
+                    ) : (
+                      <StepIcon size={16} className={isCurrent ? 'stroke-[2.5]' : ''} />
+                    )}
+                  </div>
+                  <span
+                    className={`mt-1 font-mono text-[10px] font-bold ${
+                      isCurrent
+                        ? 'text-amber-300'
+                        : isCompleted
+                        ? 'text-emerald-400'
+                        : 'text-slate-500'
+                    }`}
+                  >
+                    0{s.step}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Step Indicator Pill for Material Stepper */}
+          <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 shadow-inner">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="font-mono text-xs font-bold text-amber-400 shrink-0">
+                Step 0{activeStep.step}/05:
+              </span>
+              <span className="text-xs font-semibold text-white truncate">
+                {activeStep.step === 1 && 'Hydraulic Shock Inception'}
+                {activeStep.step === 2 && 'PostGIS TDOA Triangulation'}
+                {activeStep.step === 3 && 'GPS Anti-Ghost Attestation'}
+                {activeStep.step === 4 && '3-Stage Photo Evidence'}
+                {activeStep.step === 5 && 'MFMA Sec 33 Payment Voucher'}
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-slate-400 shrink-0 pl-2">
+              Tap step node
+            </span>
+          </div>
+        </div>
+
+        {/* Desktop 5-Step Grid Tabs (Medium Screens and Above) */}
+        <div className="hidden md:grid md:grid-cols-5 gap-2.5 pt-6">
           {PILOT_STEPS.map((s, idx) => {
             const isCompleted = idx < currentStepIndex;
             const isCurrent = idx === currentStepIndex;
+            const StepIcon = STEP_ICONS[idx] || Activity;
+
             return (
               <button
                 key={s.step}
                 type="button"
                 onClick={() => setCurrentStepIndex(idx)}
-                className={`py-2.5 px-3 text-left sm:text-center rounded-xl transition-all border flex flex-col justify-between gap-1.5 min-h-[64px] ${
+                className={`py-3 px-3 text-left rounded-xl transition-all border flex flex-col justify-between gap-2 min-h-[72px] ${
                   isCurrent
-                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-lg shadow-amber-500/10'
+                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/30'
                     : isCompleted
                     ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20'
                     : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:bg-slate-800/40 hover:text-slate-300'
                 }`}
               >
-                <div className="flex items-center justify-between sm:justify-center gap-1.5 w-full">
-                  <span className="text-xs font-mono font-bold">Step 0{s.step}</span>
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-1.5">
+                    <StepIcon
+                      size={14}
+                      className={
+                        isCurrent
+                          ? 'text-amber-400'
+                          : isCompleted
+                          ? 'text-emerald-400'
+                          : 'text-slate-500'
+                      }
+                    />
+                    <span className="text-xs font-mono font-bold">Step 0{s.step}</span>
+                  </div>
                   {isCompleted ? (
                     <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
                   ) : isCurrent ? (
