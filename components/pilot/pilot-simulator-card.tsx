@@ -124,16 +124,26 @@ const PILOT_STEPS: PilotStep[] = [
 export function PilotSimulatorCard() {
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   const activeStep = PILOT_STEPS[currentStepIndex];
 
   const handleNextStep = () => {
     if (currentStepIndex < PILOT_STEPS.length - 1) {
       setIsSimulating(true);
-      setTimeout(() => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
         setCurrentStepIndex((prev) => prev + 1);
         setIsSimulating(false);
-      }, 300);
+      }, 250);
     }
   };
 
@@ -144,15 +154,17 @@ export function PilotSimulatorCard() {
   };
 
   const handleReset = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setIsSimulating(false);
     setCurrentStepIndex(0);
   };
 
   return (
-    <Card className="bg-slate-900 border-slate-800 shadow-2xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800 p-6">
+    <Card className="bg-slate-900 border-slate-800 shadow-2xl overflow-hidden print:border-slate-700">
+      <CardHeader className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800 p-6 sm:p-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded">
                 Executive Demonstration Mode
               </span>
@@ -164,13 +176,14 @@ export function PilotSimulatorCard() {
               <Sparkles className="text-amber-400 shrink-0" size={24} />
               Supervised Alert-to-Repair Live Pilot Simulator
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-light mt-1">
+            <p className="text-xs sm:text-sm text-slate-300 font-light mt-1 max-w-3xl leading-relaxed">
               Demonstrates the complete end-to-end operational cycle that turns undetected subterranean water loss into verified MFMA expenditure reconciliation.
             </p>
           </div>
 
           <div className="flex items-center gap-2 self-start md:self-center shrink-0">
             <Button
+              type="button"
               variant="outline"
               size="sm"
               onClick={handleReset}
@@ -185,36 +198,38 @@ export function PilotSimulatorCard() {
           </div>
         </div>
 
-        {/* 5-Step Progress Tabs */}
-        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 pt-6">
+        {/* 5-Step Progress Tabs - Non-truncated responsive layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-6">
           {PILOT_STEPS.map((s, idx) => {
             const isCompleted = idx < currentStepIndex;
             const isCurrent = idx === currentStepIndex;
             return (
               <button
                 key={s.step}
+                type="button"
                 onClick={() => setCurrentStepIndex(idx)}
-                className={`py-2 px-1 sm:px-3 text-center rounded-lg transition-all border flex flex-col items-center gap-1 ${
+                className={`py-2.5 px-3 text-left sm:text-center rounded-xl transition-all border flex flex-col justify-between gap-1.5 min-h-[64px] ${
                   isCurrent
                     ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-lg shadow-amber-500/10'
                     : isCompleted
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:bg-slate-800/40'
+                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20'
+                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:bg-slate-800/40 hover:text-slate-300'
                 }`}
               >
-                <div className="flex items-center gap-1">
+                <div className="flex items-center justify-between sm:justify-center gap-1.5 w-full">
+                  <span className="text-xs font-mono font-bold">Step 0{s.step}</span>
                   {isCompleted ? (
-                    <CheckCircle2 size={12} className="text-emerald-400" />
-                  ) : (
-                    <span className="text-[11px] font-mono font-bold">0{s.step}</span>
-                  )}
+                    <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                  ) : isCurrent ? (
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
+                  ) : null}
                 </div>
-                <span className="text-[10px] font-medium truncate hidden sm:inline-block max-w-full">
-                  {s.step === 1 && 'Burst Shock'}
-                  {s.step === 2 && 'TDOA Pinpoint'}
-                  {s.step === 3 && 'GPS Geofence'}
-                  {s.step === 4 && '3-Stage Photo'}
-                  {s.step === 5 && 'MFMA Voucher'}
+                <span className="text-xs font-medium leading-tight whitespace-normal">
+                  {s.step === 1 && '1. Hydraulic Shock'}
+                  {s.step === 2 && '2. TDOA Triangulation'}
+                  {s.step === 3 && '3. GPS Anti-Ghost'}
+                  {s.step === 4 && '4. 3-Stage Photo'}
+                  {s.step === 5 && '5. MFMA Voucher'}
                 </span>
               </button>
             );

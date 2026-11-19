@@ -53,7 +53,7 @@ export function DossierSelector({
             <div className="flex flex-col text-left">
               <div className="flex items-center gap-1.5">
                 <span className="font-mono text-amber-400 text-[11px]">{d.code}</span>
-                <span className="truncate max-w-[140px]">{d.title}</span>
+                <span className="whitespace-nowrap">{d.title}</span>
               </div>
               <span className="text-[10px] text-slate-500 font-normal">
                 {d.wardScope}

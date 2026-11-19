@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PilotSimulatorCard } from '@/components/pilot/pilot-simulator-card';
+import { TransientBurstWalkthrough } from '@/components/pilot/transient-burst-walkthrough';
 
 export const metadata = {
   title: 'Architecture Wiki & Hardware Specification | Sankofa Water',
@@ -123,7 +124,7 @@ const HARDWARE_BOM = [
   },
   {
     component: 'Total Per Node Cost',
-    mvp0: 'R 800.00 (R 8,000 for 10-Node Network)',
+    mvp0: 'R 800.00 / Node (R 90,000 Total Delivery vs R 150,000 Turn-key Fee)',
     tier3: 'R 99,700.00 (Standard Municipal Tender Quotation)',
     saving: '99.2%',
   },
@@ -141,13 +142,13 @@ export default function ArchitectureWikiPage() {
           {/* Phase Badges */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm">
-              Phase 0: R 8,000 MVP (10 Nodes)
+              Tier 1A: R 150,000 Turn-key Pilot (40% Net Margin)
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-mono text-slate-300 bg-slate-800/80 border border-slate-700">
-              Phase 1: R 2.28M Lean DMA
+              Tier 1B: R 1.25M Lean DMA (35 Nodes)
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-mono text-slate-300 bg-slate-800/80 border border-slate-700">
-              Phase 2: R 3.45M Full 36-Ward Citywide
+              Tier 2: R 5.85M Full 36-Ward Citywide
             </span>
           </div>
 
@@ -204,8 +205,13 @@ export default function ArchitectureWikiPage() {
       </section>
 
       {/* Live Supervised Pilot Simulator (Hourglass Methodology) */}
-      <section className="space-y-4">
+      <section id="pilot-simulator" className="space-y-4 scroll-mt-24">
         <PilotSimulatorCard />
+      </section>
+
+      {/* Hydraulic Transient Suppression & Pipeline Loss Recovery Walkthrough */}
+      <section id="transient-recovery-walkthrough" className="space-y-4 scroll-mt-24">
+        <TransientBurstWalkthrough />
       </section>
 
       {/* 4-Layer Architecture Cards */}
