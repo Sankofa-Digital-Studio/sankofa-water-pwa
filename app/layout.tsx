@@ -3,7 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "@/app/globals.css";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 
-/* ── Fonts ──────────────────────────────────────────────────────────────── */
+/* �� Fonts ���������������������������������������������������������������� */
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -16,14 +16,14 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-/* ── Metadata ───────────────────────────────────────────────────────────── */
+/* �� Metadata ������������������������������������������������������������� */
 export const metadata: Metadata = {
   title: {
     default: "Sankofa Water",
     template: "%s | Sankofa Water",
   },
   description:
-    "Real-time water infrastructure monitoring for the Matjhabeng Local Municipality. Track sensor readings, manage alerts, and respond to outages.",
+    "A proposed municipal water-loss pilot for Matjhabeng. Explore simulated pressure alerts, field evidence and response economics.",
   keywords: [
     "water",
     "IoT",
@@ -57,14 +57,12 @@ export const metadata: Metadata = {
     locale: "en_ZA",
     url: process.env["NEXT_PUBLIC_APP_URL"] ?? "https://sankofa-water.vercel.app",
     siteName: "Sankofa Water",
-    title: "Sankofa Water — Matjhabeng Infrastructure Monitoring",
+    title: "Sankofa Water - Matjhabeng Infrastructure Monitoring",
     description:
-      "Real-time water infrastructure monitoring for the Matjhabeng Local Municipality.",
+      "Explore a simulated water network incident and the proposed Matjhabeng pilot.",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/screenshots/desktop-dashboard.png",
         alt: "Sankofa Water Dashboard",
       },
     ],
@@ -75,18 +73,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sankofa Water",
     description:
-      "Real-time water infrastructure monitoring for the Matjhabeng Local Municipality.",
-    images: ["/og-image.png"],
+      "Explore a simulated water network incident and the proposed Matjhabeng pilot.",
+    images: ["/screenshots/desktop-dashboard.png"],
   },
 
   // Robots
   robots: {
-    index: false, // Internal ops tool — do not index
+    index: false, // Internal ops tool - do not index
     follow: false,
   },
 };
 
-/* ── Viewport ───────────────────────────────────────────────────────────── */
+/* �� Viewport ������������������������������������������������������������� */
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#020617" },
@@ -99,7 +97,7 @@ export const viewport: Viewport = {
   viewportFit: "cover", // Respect notch / home indicator on iOS
 };
 
-/* ── Root Layout ────────────────────────────────────────────────────────── */
+/* �� Root Layout ���������������������������������������������������������� */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -126,3 +124,4 @@ export default function RootLayout({
     </html>
   );
 }
+
