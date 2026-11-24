@@ -236,7 +236,7 @@ export default function GisCommandCenterPage() {
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
             <span className="font-mono text-xs uppercase font-bold text-amber-400 tracking-wider">
-              Live GIS Command Center
+              Network incident simulator
             </span>
           </div>
           <h1 className="text-xl sm:text-2xl font-black text-white">
@@ -366,3 +366,4 @@ export default function GisCommandCenterPage() {
     </div>
   );
 }
+

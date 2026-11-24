@@ -7,9 +7,9 @@ import {
   Wrench,
   FileCheck2,
   Cpu,
-  BookOpen,
+  Droplets,
   ShieldCheck,
-  ExternalLink,
+
 } from 'lucide-react';
 
 interface PublicLayoutProps {
@@ -17,10 +17,11 @@ interface PublicLayoutProps {
 }
 
 const NAV_LINKS = [
-  { href: '/', label: 'Architecture', icon: Cpu, exact: true },
-  { href: '/map', label: 'GIS Command Center', icon: MapPin },
-  { href: '/dashboard', label: 'Financial ROI', icon: TrendingUp },
-  { href: '/field', label: 'Field PWA', icon: Wrench, protectedBadge: true },
+  { href: '/', label: 'Pilot overview', icon: Droplets },
+  { href: '/architecture', label: 'Architecture', icon: Cpu },
+  { href: '/map', label: 'Demo map', icon: MapPin },
+  { href: '/dashboard', label: 'Economics', icon: TrendingUp },
+  { href: '/field', label: 'Field workspace', icon: Wrench, protectedBadge: true },
   { href: '/sla', label: 'SLA Portal', icon: ShieldCheck },
   { href: '/critic', label: 'Critic Loop', icon: Activity },
   { href: '/dossiers', label: 'Dossiers', icon: FileCheck2, protectedBadge: true },
@@ -29,24 +30,9 @@ const NAV_LINKS = [
 export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950">
-      {/* Proverbs 27:23 Scripture Ticker Bar */}
-      <aside
-        aria-label="Scripture banner"
-        className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-1.5 text-xs text-amber-300 flex items-center justify-between overflow-x-auto whitespace-nowrap gap-4"
-      >
-        <div className="flex items-center gap-2 mx-auto">
-          <BookOpen size={14} className="text-amber-400 shrink-0" />
-          <span className="font-serif italic font-medium">
-            &ldquo;Be diligent to know the state of your flocks, and look well to your herds; for riches do not endure forever, nor a crown to all generations.&rdquo;
-          </span>
-          <span className="font-semibold text-amber-400 font-mono text-[11px] uppercase tracking-wider">
-            — Proverbs 27:23–24
-          </span>
-        </div>
-      </aside>
 
       {/* Main Public Header */}
-      <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur border-b border-slate-800">
+      <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur border-b border-slate-800 print:static print:border-none">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-4">
             {/* Brand Logo & Name */}
@@ -90,10 +76,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
 
             {/* Right Status Pill & Auth CTA */}
             <div className="flex items-center gap-2.5">
-              <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>10 Nodes Active</span>
-              </div>
+
               <Link
                 href="/auth/login"
                 className="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md shadow-amber-500/10 transition-colors"
@@ -130,8 +113,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
             <span className="font-semibold text-white">Sankofa Digital Water</span>
             <span className="text-slate-600">|</span>
             <span>Matjhabeng Non-Revenue Water PWA</span>
-            <span className="text-slate-600">|</span>
-            <span className="font-mono text-amber-400">Target NRW: 64.2% → 38.0%</span>
+
           </div>
           <div className="flex items-center gap-4 text-slate-500">
             <span>Free State, South Africa</span>
@@ -144,3 +126,4 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
     </div>
   );
 }
+

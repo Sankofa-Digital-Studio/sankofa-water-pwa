@@ -24,6 +24,7 @@ import { formatZar } from '@/lib/utils/financial.utils';
 export interface PilotStep {
   step: number;
   phase: string;
+  shortLabel: string;
   title: string;
   subtitle: string;
   metric: string;
@@ -37,16 +38,17 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 1,
     phase: 'Hourglass Phase 1 & 2: Edge Acoustic Detection',
+    shortLabel: 'Hydraulic Shock',
     title: 'Water Hammer & Hydraulic Transient Detection',
     subtitle: 'Node 101 & 102 (Welkom CBD, Stateway Ave)',
-    metric: '11.2 Bar Spike ➔ 0.8 Bar Drop',
+    metric: '11.2 Bar Spike ? 0.8 Bar Drop',
     badge: 'BURST_DETECTED',
     badgeVariant: 'surge',
     description:
       'Acoustic transducer detects catastrophic 11.2 bar transient shockwave following load-shedding pump surge against brittle 1974 Class 10 Asbestos Cement pipe.',
     technicalDetails: [
       { label: 'Sampling Frequency', value: '1,000 Hz Edge Interrupt' },
-      { label: 'Static Delta (ΔP)', value: '-2.4 Bar within 800ms' },
+      { label: 'Static Delta (?P)', value: '-2.4 Bar within 800ms' },
       { label: 'LoRaWAN Uplink', value: 'EU868 +14dBm (SF9, 1.2s airtime)' },
       { label: 'Battery Impact', value: '0.030 mAh consumed' },
     ],
@@ -54,24 +56,26 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 2,
     phase: 'Hourglass Phase 3: Spatial TDOA Triangulation',
+    shortLabel: 'Acoustic TDOA',
     title: 'PostGIS Multi-Node Coincidence Localization',
     subtitle: 'Triangulation between Node 101 & Node 102',
-    metric: '± 11.4 Meters Circular Error',
+    metric: '� 11.4 Meters Circular Error',
     badge: 'TDOA_COINCIDENCE_CONFIRMED',
     badgeVariant: 'depressurized',
     description:
       'Server-side PostGIS engine calculates acoustic time-difference-of-arrival (TDOA) across water wavefront velocity (1,250 m/s), eliminating false alarms from private irrigation.',
     technicalDetails: [
       { label: 'Propagation Velocity', value: '1,250 m/s (AC Pipeline)' },
-      { label: 'Time Delta (Δt)', value: '18.4 milliseconds' },
-      { label: 'Coordinates', value: '27.9786° S, 26.7352° E' },
+      { label: 'Time Delta (?t)', value: '18.4 milliseconds' },
+      { label: 'Coordinates', value: '27.9786� S, 26.7352� E' },
       { label: 'Zone Scope', value: 'Ward 3 CBD Transmission Main' },
     ],
   },
   {
     step: 3,
     phase: 'Hourglass Phase 4 & 5: Field Dispatch & Geofencing',
-    title: 'Anti-Ghost-Work GPS Attestation (≤ 15.0m)',
+    shortLabel: 'GPS Geofence',
+    title: 'Anti-Ghost-Work GPS Attestation (= 15.0m)',
     subtitle: 'Mobile Field Crew Dispatched to Ground Zero',
     metric: '8.2m Distance Verified',
     badge: 'GEOFENCE_VALIDATED',
@@ -79,8 +83,8 @@ const PILOT_STEPS: PilotStep[] = [
     description:
       'Mobile field plumber arrives on scene. Server-side ST_DistanceSphere confirms physical presence within 8.2 meters of acoustic centroid, permanently blocking ghost-work fraud.',
     technicalDetails: [
-      { label: 'Plumber Mobile GPS', value: '± 3.1m DOP accuracy' },
-      { label: 'Geofence Constraint', value: 'ST_DistanceSphere ≤ 15.0m' },
+      { label: 'Plumber Mobile GPS', value: '� 3.1m DOP accuracy' },
+      { label: 'Geofence Constraint', value: 'ST_DistanceSphere = 15.0m' },
       { label: 'Discrepancy Check', value: 'PASS (0.0m violation)' },
       { label: 'Statutory Alignment', value: 'MFMA Section 53' },
     ],
@@ -88,6 +92,7 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 4,
     phase: 'Hourglass Phase 6: 3-Stage Photographic Proof',
+    shortLabel: 'Photo Proof',
     title: 'Excavation, Class 16 Sleeve & Compaction Verification',
     subtitle: 'Immutable Evidence Ledger for Municipal Audit',
     metric: '3 of 3 Stages Completed',
@@ -105,6 +110,7 @@ const PILOT_STEPS: PilotStep[] = [
   {
     step: 5,
     phase: 'Hourglass Phase 7: Municipal Authorization & Water Saved',
+    shortLabel: 'MFMA Voucher',
     title: 'MFMA Sec 33 Payment Voucher & Recovered Water',
     subtitle: 'Director of Water Services Digital Authorization',
     metric: '1,680 kL Saved = R 28,576.80',
@@ -113,7 +119,7 @@ const PILOT_STEPS: PilotStep[] = [
     description:
       'Municipal accounting officer reviews tamper-proof audit trail and authorizes disbursement. Water saved is certified against bulk Vaal Central tariffs.',
     technicalDetails: [
-      { label: 'Water Saved (Single Event)', value: '1,680 kL (28 kL/h × 60h saved)' },
+      { label: 'Water Saved (Single Event)', value: '1,680 kL (28 kL/h � 60h saved)' },
       { label: 'Bulk Tariff Recovered', value: 'R 28,576.80 (@ R17.01/kL)' },
       { label: 'Civic Transparency', value: 'Published to Public SLA Portal' },
       { label: 'POPIA Compliance', value: 'Signer IP SHA-256 hashed' },
@@ -124,16 +130,26 @@ const PILOT_STEPS: PilotStep[] = [
 export function PilotSimulatorCard() {
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   const activeStep = PILOT_STEPS[currentStepIndex];
 
   const handleNextStep = () => {
     if (currentStepIndex < PILOT_STEPS.length - 1) {
       setIsSimulating(true);
-      setTimeout(() => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
         setCurrentStepIndex((prev) => prev + 1);
         setIsSimulating(false);
-      }, 300);
+      }, 250);
     }
   };
 
@@ -144,15 +160,19 @@ export function PilotSimulatorCard() {
   };
 
   const handleReset = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setIsSimulating(false);
     setCurrentStepIndex(0);
   };
 
+  if (!activeStep) return null;
+
   return (
-    <Card className="bg-slate-900 border-slate-800 shadow-2xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800 p-6">
+    <Card className="bg-slate-900 border-slate-800 shadow-2xl overflow-hidden print:border-slate-700">
+      <CardHeader className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800 p-6 sm:p-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded">
                 Executive Demonstration Mode
               </span>
@@ -162,16 +182,17 @@ export function PilotSimulatorCard() {
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2.5">
               <Sparkles className="text-amber-400 shrink-0" size={24} />
-              Supervised Alert-to-Repair Live Pilot Simulator
+              Alert-to-repair simulation
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-light mt-1">
+            <p className="text-xs sm:text-sm text-slate-300 font-light mt-1 max-w-3xl leading-relaxed">
               Demonstrates the complete end-to-end operational cycle that turns undetected subterranean water loss into verified MFMA expenditure reconciliation.
             </p>
           </div>
 
           <div className="flex items-center gap-2 self-start md:self-center shrink-0">
             <Button
-              variant="outline"
+              type="button"
+              variant="secondary"
               size="sm"
               onClick={handleReset}
               className="text-xs border-slate-700 hover:bg-slate-800"
@@ -185,40 +206,81 @@ export function PilotSimulatorCard() {
           </div>
         </div>
 
-        {/* 5-Step Progress Tabs */}
-        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 pt-6">
-          {PILOT_STEPS.map((s, idx) => {
-            const isCompleted = idx < currentStepIndex;
-            const isCurrent = idx === currentStepIndex;
-            return (
-              <button
-                key={s.step}
-                onClick={() => setCurrentStepIndex(idx)}
-                className={`py-2 px-1 sm:px-3 text-center rounded-lg transition-all border flex flex-col items-center gap-1 ${
-                  isCurrent
-                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-lg shadow-amber-500/10'
-                    : isCompleted
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:bg-slate-800/40'
-                }`}
-              >
-                <div className="flex items-center gap-1">
-                  {isCompleted ? (
-                    <CheckCircle2 size={12} className="text-emerald-400" />
-                  ) : (
-                    <span className="text-[11px] font-mono font-bold">0{s.step}</span>
-                  )}
-                </div>
-                <span className="text-[10px] font-medium truncate hidden sm:inline-block max-w-full">
-                  {s.step === 1 && 'Burst Shock'}
-                  {s.step === 2 && 'TDOA Pinpoint'}
-                  {s.step === 3 && 'GPS Geofence'}
-                  {s.step === 4 && '3-Stage Photo'}
-                  {s.step === 5 && 'MFMA Voucher'}
-                </span>
-              </button>
-            );
-          })}
+        {/* Material Stepper (Pure Numbered Nodes & Checkmarks - Zero Icon Clutter) */}
+        <div className="pt-6">
+          <div className="relative flex items-center justify-between max-w-3xl mx-auto px-4 sm:px-8">
+            {/* Background connector track line */}
+            <div className="absolute left-8 right-8 top-5 -translate-y-1/2 h-1 bg-slate-800 -z-0 rounded-full" />
+
+            {/* Active progress connector line */}
+            <div
+              className="absolute left-8 top-5 -translate-y-1/2 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-300 -z-0 rounded-full"
+              style={{
+                width: `${(currentStepIndex / (PILOT_STEPS.length - 1)) * 84}%`,
+              }}
+            />
+
+            {PILOT_STEPS.map((s, idx) => {
+              const isCompleted = idx < currentStepIndex;
+              const isCurrent = idx === currentStepIndex;
+
+              return (
+                <button
+                  key={s.step}
+                  type="button"
+                  onClick={() => setCurrentStepIndex(idx)}
+                  aria-label={`Step ${s.step}: ${s.title}`}
+                  aria-current={isCurrent ? 'step' : undefined}
+                  className="relative z-10 flex flex-col items-center group focus:outline-none"
+                >
+                  {/* Numbered Step Circle (No icons - purely step numbers 01 to 05 or Checkmark) */}
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-xs sm:text-sm transition-all duration-200 border-2 ${
+                      isCurrent
+                        ? 'bg-amber-500 border-amber-300 text-slate-950 shadow-lg shadow-amber-500/30 scale-110 ring-4 ring-amber-500/20'
+                        : isCompleted
+                        ? 'bg-emerald-500 border-emerald-400 text-slate-950 hover:scale-105'
+                        : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+                    }`}
+                  >
+                    {isCompleted ? (
+                      <CheckCircle2 size={18} className="stroke-[2.5]" />
+                    ) : (
+                      <span>0{s.step}</span>
+                    )}
+                  </div>
+
+                  {/* Step Label beneath circle (Clear, concise, no overflow) */}
+                  <span
+                    className={`mt-2 font-mono text-[11px] sm:text-xs font-semibold text-center hidden sm:block ${
+                      isCurrent
+                        ? 'text-amber-300 font-bold'
+                        : isCompleted
+                        ? 'text-emerald-400'
+                        : 'text-slate-400 group-hover:text-slate-300'
+                    }`}
+                  >
+                    {s.shortLabel}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active Step Banner on mobile (< 640px) */}
+          <div className="sm:hidden mt-4 flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="font-mono text-xs font-bold text-amber-400 shrink-0">
+                Step 0{activeStep.step}/05:
+              </span>
+              <span className="text-xs font-semibold text-white truncate">
+                {activeStep.shortLabel}
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-slate-400 shrink-0 pl-2">
+              Tap 01-05
+            </span>
+          </div>
         </div>
       </CardHeader>
 
@@ -275,7 +337,7 @@ export function PilotSimulatorCard() {
               <Activity className="text-red-400 animate-pulse" size={18} />
               <span>Simulated Rupture: Static pressure collapse on Stateway AC 300mm main</span>
             </div>
-            <span className="font-mono font-bold text-red-400">ΔP &gt; 1.5 Bar (CRITICAL)</span>
+            <span className="font-mono font-bold text-red-400">?P &gt; 1.5 Bar (CRITICAL)</span>
           </div>
         )}
 
@@ -293,7 +355,7 @@ export function PilotSimulatorCard() {
           <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 flex items-center justify-between text-xs text-amber-200">
             <div className="flex items-center gap-2">
               <ShieldCheck className="text-amber-400" size={18} />
-              <span>Attestation Engine: Plumber device located 8.2m from fault (Allowed: ≤ 15.0m)</span>
+              <span>Attestation Engine: Plumber device located 8.2m from fault (Allowed: = 15.0m)</span>
             </div>
             <span className="font-mono font-bold text-emerald-400">ANTI-GHOST LOCK: PASS</span>
           </div>
@@ -302,15 +364,15 @@ export function PilotSimulatorCard() {
         {activeStep.step === 4 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="p-3 rounded-lg bg-slate-950 border border-emerald-500/30 text-xs text-slate-300">
-              <span className="text-emerald-400 font-bold block mb-1">✓ Stage 1: Excavated</span>
+              <span className="text-emerald-400 font-bold block mb-1">V Stage 1: Excavated</span>
               Pothole cleared to 4.2m depth; asbestos pipe fissure inspected.
             </div>
             <div className="p-3 rounded-lg bg-slate-950 border border-emerald-500/30 text-xs text-slate-300">
-              <span className="text-emerald-400 font-bold block mb-1">✓ Stage 2: Sleeved</span>
+              <span className="text-emerald-400 font-bold block mb-1">V Stage 2: Sleeved</span>
               Class 16 split-collar sleeve torqued; hydrostatic test tight.
             </div>
             <div className="p-3 rounded-lg bg-slate-950 border border-emerald-500/30 text-xs text-slate-300">
-              <span className="text-emerald-400 font-bold block mb-1">✓ Stage 3: Compacted</span>
+              <span className="text-emerald-400 font-bold block mb-1">V Stage 3: Compacted</span>
               Layered gravel compaction completed; asphalt patch prepped.
             </div>
           </div>
@@ -335,7 +397,7 @@ export function PilotSimulatorCard() {
                 <span className="font-mono font-bold text-emerald-400">R 28,576.80</span>
               </div>
               <div className="bg-slate-950 p-2.5 rounded border border-slate-800">
-                <span className="text-slate-400 block">Disbursement Approved</span>
+                <span className="text-slate-400 block">Example disbursement</span>
                 <span className="font-mono font-bold text-amber-400">R 8,500.00 (Plumber Civil)</span>
               </div>
             </div>
@@ -345,7 +407,7 @@ export function PilotSimulatorCard() {
         {/* Step Navigation Controls */}
         <div className="flex items-center justify-between pt-4 border-t border-slate-800">
           <Button
-            variant="outline"
+            variant="secondary"
             size="sm"
             onClick={handlePrevStep}
             disabled={currentStepIndex === 0}
@@ -360,7 +422,7 @@ export function PilotSimulatorCard() {
 
           {currentStepIndex < PILOT_STEPS.length - 1 ? (
             <Button
-              variant="default"
+              variant="primary"
               size="sm"
               onClick={handleNextStep}
               className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
@@ -370,7 +432,7 @@ export function PilotSimulatorCard() {
             </Button>
           ) : (
             <Button
-              variant="default"
+              variant="primary"
               size="sm"
               onClick={handleReset}
               className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs"
@@ -384,3 +446,4 @@ export function PilotSimulatorCard() {
     </Card>
   );
 }
+
