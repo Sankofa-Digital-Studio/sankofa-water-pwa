@@ -138,7 +138,7 @@ export default function FinancialDashboardPage() {
               <span>Hydraulic Volume Calculation</span>
             </div>
             <p className="font-mono text-[11px] text-slate-400 leading-relaxed bg-slate-950 p-2 rounded border border-slate-800">
-              kL = {sliderValues.bursts} bursts × {sliderValues.flowRate} kL/hr × {sliderValues.hoursSaved} hrs
+              kL = {sliderValues.bursts} bursts � {sliderValues.flowRate} kL/hr � {sliderValues.hoursSaved} hrs
               <br />
               = <span className="text-emerald-400 font-bold">{klSaved.toLocaleString()} kL</span>
             </p>
@@ -168,7 +168,7 @@ export default function FinancialDashboardPage() {
             {/* Card 3: ROI Multiple */}
             <StatCard
               label="Capex Amortization Multiple"
-              value={`${roiMultiple}×`}
+              value={`${roiMultiple}�`}
               trend="up"
               trendLabel={`Payback: ${paybackMonths} mo`}
             />
@@ -215,7 +215,7 @@ export default function FinancialDashboardPage() {
           <div className="flex items-center gap-2.5">
             <Layers size={20} className="text-amber-500" />
             <h2 className="text-lg font-bold text-white">
-              {tierInfo.name} — Scope of Engineering & Municipal Value
+              {tierInfo.name} - Scope of Engineering & Municipal Value
             </h2>
           </div>
           <span className="font-mono text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
@@ -260,12 +260,12 @@ export default function FinancialDashboardPage() {
                   Sankofa MVP-0 Commercial Delivery & Profitability Architecture
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">
-                  Itemized turn-key delivery costs yielding a sustainable 40.0% net operating margin for Sankofa while sitting beneath municipal MFMA 3-quote procurement friction limits.
+                  Illustrative pilot pricing and direct delivery costs. The modelled margin depends on supplier quotes, field support costs and the final scope. Confirm the procurement route with the municipality.
                 </p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <span className="text-xs font-mono px-3 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold">
-                  Net Margin: 40.0% (+R 60,000)
+                  Contribution after direct costs: 40.0% (R 60,000)
                 </span>
               </div>
             </div>
@@ -284,12 +284,12 @@ export default function FinancialDashboardPage() {
               <div className="bg-slate-950/70 p-3.5 rounded-xl border border-emerald-900/40 bg-emerald-950/20">
                 <span className="text-xs text-emerald-300 block">Sankofa Net Profit</span>
                 <span className="text-base font-bold font-mono text-emerald-400 mt-0.5 block">R 60,000.00</span>
-                <span className="text-[10px] text-emerald-300 font-bold">40.0% Margin Guaranteed</span>
+                <span className="text-[10px] text-emerald-300 font-bold">40.0% modelled contribution</span>
               </div>
               <div className="bg-slate-950/70 p-3.5 rounded-xl border border-cyan-900/40 bg-cyan-950/20">
                 <span className="text-xs text-cyan-300 block">Municipal Water Saved (90d)</span>
                 <span className="text-base font-bold font-mono text-cyan-400 mt-0.5 block">R 514,382.00</span>
-                <span className="text-[10px] text-cyan-300 font-bold">3.4× Municipal ROI</span>
+                <span className="text-[10px] text-cyan-300 font-bold">3.4� Municipal ROI</span>
               </div>
             </div>
 
@@ -312,3 +312,4 @@ export default function FinancialDashboardPage() {
     </div>
   );
 }
+

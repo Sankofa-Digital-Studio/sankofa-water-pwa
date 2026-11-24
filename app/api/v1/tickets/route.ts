@@ -292,6 +292,7 @@ export async function PATCH(req: NextRequest) {
       {
         success: true,
         ticket: updatedTicket,
+        stageAdvanced: true,
         stageCompletion: completionData,
         geofenceVerified: true,
         distanceMeters: distanceM,
@@ -305,3 +306,4 @@ export async function PATCH(req: NextRequest) {
     );
   }
 }
+

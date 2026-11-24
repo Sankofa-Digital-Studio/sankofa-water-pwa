@@ -51,9 +51,9 @@ const MILESTONES: WalkthroughMilestone[] = [
     pressureState: 'Peak Pressure: 12.4 Bar (354% of Nominal Rating)',
     burstPreventionImpact: 'Initiates pipe wall micro-fissuring and fatigue fractures',
     detailedMechanics: [
-      'Stage 4–6 power restoration triggers un-cushioned high-volume centrifugal pump restarts.',
+      'Stage 4-6 power restoration triggers un-cushioned high-volume centrifugal pump restarts.',
       'Acoustic shockwave propagates at 1,250 m/s down 300mm AC trunk lines along Stateway Avenue.',
-      'Without mitigation, repeated transient cycles cause circumferential pipe rupture within 72–120 hours.',
+      'Without mitigation, repeated transient cycles cause circumferential pipe rupture within 72-120 hours.',
     ],
     operationalOutcome:
       'Transducers intercept the rising edge wave in under 15ms, triggering rapid protection workflows before structural failure occurs.',
@@ -70,8 +70,8 @@ const MILESTONES: WalkthroughMilestone[] = [
     pressureState: 'Damped Wavefront: Transient damped by 42% at sensor diaphragm',
     burstPreventionImpact: 'Prevents transducer blowout and captures exact transient profile',
     detailedMechanics: [
-      'Piezoresistive sensor measures ΔP > 1.5 bar in under 800 milliseconds.',
-      'High-speed interrupt awakens ESP32-C3 from 11.2 µA deep sleep in 3.5 milliseconds.',
+      'Piezoresistive sensor measures ?P > 1.5 bar in under 800 milliseconds.',
+      'High-speed interrupt awakens ESP32-C3 from 11.2 �A deep sleep in 3.5 milliseconds.',
       'Signed ChirpStack packet is transmitted over EU868 (+14 dBm) consuming only 0.030 mAh.',
     ],
     operationalOutcome:
@@ -85,7 +85,7 @@ const MILESTONES: WalkthroughMilestone[] = [
     phaseBadge: 'Spatial Localization',
     badgeVariant: 'depressurized',
     summary:
-      'Server-side PostGIS engine calculates acoustic Time-Difference-of-Arrival (TDOA) across neighboring boundary nodes, pin-pointing the subterranean micro-fissure to ±11.4 meters.',
+      'Server-side PostGIS engine calculates acoustic Time-Difference-of-Arrival (TDOA) across neighboring boundary nodes, pin-pointing the subterranean micro-fissure to �11.4 meters.',
     pressureState: 'Pressure Delta: -2.4 Bar localized between Node 101 & 102',
     burstPreventionImpact: 'Discovers underground leakage before road collapse or surface sinkholes',
     detailedMechanics: [
@@ -104,11 +104,11 @@ const MILESTONES: WalkthroughMilestone[] = [
     phaseBadge: 'Field Containment',
     badgeVariant: 'nominal',
     summary:
-      'Field plumbing crews arrive on site with live GPS geofence validation (≤ 15.0m), excavating and applying a Class 16 heavy-duty repair sleeve in 4 hours instead of the historic 120-hour baseline.',
+      'Field plumbing crews arrive on site with live GPS geofence validation (= 15.0m), excavating and applying a Class 16 heavy-duty repair sleeve in 4 hours instead of the historic 120-hour baseline.',
     pressureState: 'Stabilized Line: Static pressure restored to 3.8 Bar nominal',
     burstPreventionImpact: 'Directly converts a potential catastrophic road blowout into an early sleeve repair',
     detailedMechanics: [
-      'Mobile Field PWA verifies technician physical proximity (ST_DistanceSphere ≤ 15.0m).',
+      'Mobile Field PWA verifies technician physical proximity (ST_DistanceSphere = 15.0m).',
       'Class 16 split-collar sleeve torqued around micro-fissure under static line pressure.',
       '3-Stage photo attestation captured (Excavation, Sleeve Torque, Backfill Compaction).',
     ],
@@ -127,18 +127,20 @@ const MILESTONES: WalkthroughMilestone[] = [
     pressureState: 'Reticulation Equilibrium: Wards 3 & 5 transient shocks reduced by 85%',
     burstPreventionImpact: '18 pipe blowouts prevented/month = 60,480 kL water preserved',
     detailedMechanics: [
-      'Monthly Volumetric Equation: 18 bursts × 28 kL/hr average flow × 120 hours saved = 60,480 kL/mo.',
-      'Financial Recovery Equation: 60,480 kL × R 17.01/kL Vaal Central Tariff = R 1,028,764.80 / month.',
+      'Monthly Volumetric Equation: 18 bursts � 28 kL/hr average flow � 120 hours saved = 60,480 kL/mo.',
+      'Financial Recovery Equation: 60,480 kL � R 17.01/kL Vaal Central Tariff = R 1,028,764.80 / month.',
       'Civil Cost Avoidance: Eliminates ~R 810,000 in emergency plant hire, asphalt repaving, and private property flooding claims.',
     ],
     operationalOutcome:
-      'Municipal payback on the R 150,000 turn-key pilot is achieved in just 1.3 months (over 6.8× ROI in 90 days), with zero ghost-work fraud.',
+      'Municipal payback on the R 150,000 turn-key pilot is achieved in just 1.3 months (over 6.8� ROI in 90 days), with zero ghost-work fraud.',
   },
 ];
 
 export function TransientBurstWalkthrough() {
   const [selectedMilestoneIndex, setSelectedMilestoneIndex] = useState<number>(0);
   const activeMilestone = MILESTONES[selectedMilestoneIndex];
+
+  if (!activeMilestone) return null;
 
   return (
     <Card className="bg-slate-900 border-slate-800 shadow-2xl overflow-hidden print:border-slate-700">
@@ -159,7 +161,7 @@ export function TransientBurstWalkthrough() {
               Hydraulic Transient Suppression & Pipeline Loss Recovery
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed">
-              A comprehensive technical explanation of how suppressing destructive 12-bar water hammer surges directly prevents 18 catastrophic pipeline ruptures per month across Welkom’s aged reticulation grid.
+              A comprehensive technical explanation of how suppressing destructive 12-bar water hammer surges directly prevents 18 catastrophic pipeline ruptures per month across Welkom's aged reticulation grid.
             </p>
           </div>
 
@@ -169,7 +171,7 @@ export function TransientBurstWalkthrough() {
               <Gauge size={16} className="text-red-400 shrink-0" />
               <div className="flex flex-col">
                 <span className="text-[10px] text-slate-400 font-mono">Pressure Shock Suppressed</span>
-                <span className="text-xs font-bold font-mono text-white">12.4 Bar ➔ 3.8 Bar</span>
+                <span className="text-xs font-bold font-mono text-white">12.4 Bar ? 3.8 Bar</span>
               </div>
             </div>
             <div className="px-3.5 py-1.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex items-center gap-2">
@@ -254,7 +256,7 @@ export function TransientBurstWalkthrough() {
               </span>
             </div>
             <span className="text-[10px] font-mono text-slate-400 shrink-0 pl-2">
-              Tap 01–05
+              Tap 01-05
             </span>
           </div>
         </div>
@@ -268,7 +270,7 @@ export function TransientBurstWalkthrough() {
               <span className="font-mono text-xs font-bold text-amber-400">
                 PHASE {activeMilestone.stepNumber} OF 05
               </span>
-              <span className="text-slate-600">·</span>
+              <span className="text-slate-600">�</span>
               <span className="text-xs font-mono text-slate-400">{activeMilestone.phaseBadge}</span>
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-white">{activeMilestone.title}</h3>
@@ -346,7 +348,7 @@ export function TransientBurstWalkthrough() {
         <div className="flex items-center justify-between pt-4 border-t border-slate-800 gap-2">
           <Button
             type="button"
-            variant="outline"
+            variant="secondary"
             size="sm"
             onClick={() => setSelectedMilestoneIndex((prev) => Math.max(0, prev - 1))}
             disabled={selectedMilestoneIndex === 0}
@@ -361,7 +363,7 @@ export function TransientBurstWalkthrough() {
 
           <Button
             type="button"
-            variant="default"
+            variant="primary"
             size="sm"
             onClick={() =>
               setSelectedMilestoneIndex((prev) =>
@@ -382,3 +384,4 @@ export function TransientBurstWalkthrough() {
     </Card>
   );
 }
+
